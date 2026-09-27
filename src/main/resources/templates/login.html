@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | Gestor Estudiantes</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+<main class="login-page container-fluid">
+    <div class="row login-wrapper shadow-lg">
+
+        <section class="col-lg-6 d-none d-lg-flex brand-panel">
+            <div class="brand-content">
+                <div class="brand-logo">GE</div>
+
+                <p class="brand-label">PLATAFORMA ACADÉMICA</p>
+
+                <h1>Gestor de<br>Estudiantes</h1>
+
+                <p class="brand-description">
+                    Administra información académica, asistencia, notas y matrículas
+                    desde una sola plataforma.
+                </p>
+
+                <div class="brand-line"></div>
+
+                <p class="brand-footer">Sistema académico institucional</p>
+            </div>
+        </section>
+
+        <section class="col-12 col-lg-6 form-panel">
+            <div class="form-content">
+
+                <div class="mobile-logo d-lg-none">GE</div>
+
+                <div class="mb-4">
+                    <p class="form-label-top">ACCESO AL SISTEMA</p>
+                    <h2>Bienvenido</h2>
+                    <p class="form-subtitle">
+                        Ingresa tus credenciales para continuar.
+                    </p>
+                </div>
+
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    El usuario o la contraseña son incorrectos.
+                </div>
+
+                <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                    Sesión cerrada correctamente.
+                </div>
+
+                <form th:action="@{/login}" method="post">
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuario</label>
+                        <input id="username"
+                               name="username"
+                               type="text"
+                               class="form-control form-control-lg"
+                               placeholder="Ingresa tu usuario"
+                               autocomplete="username"
+                               required
+                               autofocus>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input id="password"
+                               name="password"
+                               type="password"
+                               class="form-control form-control-lg"
+                               placeholder="Ingresa tu contraseña"
+                               autocomplete="current-password"
+                               required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 login-button">
+                        Iniciar sesión
+                    </button>
+                </form>
+
+                <p class="form-footer">
+                    ¿Necesitas ayuda? Comunícate con administración académica.
+                </p>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio | Gestor Estudiantes</title>
+</head>
+<body>
+
+<h1>Ingreso correcto</h1>
+
+<p>
+    Usuario:
+    <strong th:text="${nombreUsuario}">usuario</strong>
+</p>
+
+<p>
+    Rol activo:
+    <strong th:text="${rolActivo}">ROL</strong>
+</p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Cerrar sesión</button>
+</form>
+
+</body>
+</html>
