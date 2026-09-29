@@ -43,18 +43,28 @@ body {
     height: 100%;
     flex-direction: column;
     justify-content: center;
+
+}
+.logo{
+    display: flex;
+    justify-content: center;
+}
+.logo img{
+    width: 200px;
+    height: auto;
 }
 
 .brand-logo,
 .mobile-logo {
-    display: grid;
-    width: 58px;
-    height: 58px;
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    height: auto;
     place-items: center;
-    border-radius: 14px;
+    border-radius: 10px;
     color: var(--primary);
-    background-color: white;
     font-size: 22px;
+    background-color: white;
     font-weight: 800;
 }
 
