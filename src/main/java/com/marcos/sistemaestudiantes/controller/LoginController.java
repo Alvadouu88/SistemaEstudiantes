@@ -1,11 +1,14 @@
 package com.marcos.sistemaestudiantes.controller;
 
+import com.marcos.sistemaestudiantes.model.estudiante;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -58,6 +61,11 @@ public class LoginController {
         session.setAttribute("rolActivo", rol);
 
         return "redirect:/inicio";
+    }
+
+    @PostMapping("/tablaEstudiantes")
+    public String mostrar(@ModelAttribute estudiante estudiantes){
+        return "redirect:/tabla";
     }
 
     @GetMapping("/inicio")
