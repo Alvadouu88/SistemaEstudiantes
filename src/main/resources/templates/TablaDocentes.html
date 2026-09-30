@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/docentes.css}">
+    <title>TABLA DOCENTES</title>
+</head>
+<body class="container mt-4">
+<div>
+    <h2>Gestión de Docentes</h2>
+    <p class="text-muted">Consulta y administración de docentes</p>
+</div>
+<button onclick="registro()">Registrar nuevo docente</button>
+<div id="registro" class="modal">
+    <div class="tarjeta">
+
+        <form th:action="@{/Docentes/guardar}" method="post" th:object="${docente}">
+
+            <input type="hidden" th:field="*{idDocente}">
+            <select th:field="*{tipoDocumento}"
+                    class="form-select formulario"
+                    required>
+                <option value="">Elija Tipo de Documento</option>
+                <option value="DNI">DNI</option>
+                <option value="CE">Carné de Extranjería</option>
+                <option value="PASAPORTE">Pasaporte</option>
+            </select>
+
+            <input th:field="*{numeroDocumento}"
+                   type="text"
+                   class="formulario"
+                   placeholder="Ingrese Número de Documento"
+                   required>
+
+            <input th:field="*{nombres}"
+                   type="text"
+                   class="formulario"
+                   placeholder="Ingrese Nombres del Docente"
+                   required>
+
+            <input th:field="*{apellidos}"
+                   type="text"
+                   class="formulario"
+                   placeholder="Ingrese Apellidos del Docente"
+                   required>
+
+            <input th:field="*{correo}"
+                   type="email"
+                   class="formulario"
+                   placeholder="Ingrese Correo Electrónico"
+                   required>
+
+            <input th:field="*{telefono}"
+                   type="text"
+                   class="formulario"
+                   placeholder="Ingrese Número Telefónico"
+                   required>
+
+            <select th:field="*{activo}"
+                    class="form-select formulario"
+                    required>
+                <option value="">Seleccione Estado</option>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+
+            <div class="d-flex justify-content-between mt-3">
+
+                <button type="submit"
+                        class="btn btn-success"
+                        onclick="return confirm('¿Agregar Docente?')">
+                    Agregar Docente
+                </button>
+
+                <button type="reset"
+                        class="btn btn-danger cancelar"
+                        onclick="cerrarRegistro()">
+                    Cancelar registro
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<div id="modificar" class="modal" th:style="${modoEdicion} ? 'display: block;' : 'display: none;'">
+    <div class="tarjeta">
+        <form th:action="@{/Docentes/actualizar}" method="post" th:object="${docente}">
+            <div class="mb-3">
+                <label class="form-label">ID Estudiante</label>
+                <input type="text" th:field="*{idDocente}" class="formulario" readonly>
+            </div>
+            <input th:field="*{nombres}" type="text" class="formulario" placeholder="Ingrese Nombres del Alumno" required>
+            <input th:field="*{apellidos}" type="text" class="formulario" placeholder="Ingrese Apellidos del Alumno" required>
+            <select th:field="*{tipoDocumento}" class="form-select formulario" aria-label="Default select example" required>
+                <option value="">Elija Tipo de Documento</option>
+                <option value="DNI">DNI</option>
+                <option value="CE">Carné de Extranjería</option>
+                <option value="PASAPORTE">Pasaporte</option>
+            </select>
+            <input th:field="*{numeroDocumento}" type="text" class="formulario" placeholder="Ingrese Número de Documento" required>
+            <input th:field="*{telefono}" type="text" class="formulario" placeholder="Ingrese Número Telefónico" required>
+            <input th:field="*{correo}" type="email" class="formulario" placeholder="Ingrese Correo Electrónico" required>
+            <select th:field="*{activo}" class="form-select formulario" aria-label="Default select example" required>
+                <option value="">Seleccione Estado</option>
+                <option value="true">Activo</option>
+                <option value="false"]Inactivo</option>
+            </select>
+            <div class="d-flex justify-content-between mt-3">
+                <button type="submit" class="btn btn-warning" onclick="return confirm('¿Modificar Información de Alumno?')">Modificar Estudiante</button>
+                <a th:href="@{/Docentes/tabla}" type="reset" class="btn btn-danger cancelar" onclick="cerrarRegistro()">Cancelar Modificación</a>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Codigo</th>
+        <th>TipoDocumento</th>
+        <th>NumeroDocumento</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Correo</th>
+        <th>Telefono</th>
+        <th>Activo</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="Docente:${Docentes}">
+        <td th:text="${Docente.codigo}"> </td>
+        <td th:text="${Docente.tipoDocumento}"></td>
+        <td th:text="${Docente.numeroDocumento}"></td>
+        <td th:text="${Docente.nombres}"></td>
+        <td th:text="${Docente.apellidos}"></td>
+        <td th:text="${Docente.correo}"></td>
+        <td th:text="${Docente.telefono}"></td>
+        <td th:text="${Docente.activo}"></td>
+        <td>
+            <a th:href="@{/Docentes/editar/{id}(id=${Docente.idDocente})}" class="btn btn-outline-warning btn-sm">Editar</a>
+            <form th:action="@{/Docentes/eliminar/{id}(id=${Docente.idDocente})}" method="post">
+                <button type="submit" class="btn btn-outline-danger btn-sm envio" onclick="return confirm('¿Eliminar Docente?');">
+                Eliminar
+                </button>
+            </form>
+        </td>
+
+    </tr>
+
+
+
+
+    </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script th:src="@{/JavaScript/docentes.js}"></script>
+</body>
+</html>
