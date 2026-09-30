@@ -6,21 +6,23 @@
 </head>
 <body>
 
-<h1>Ingreso correcto</h1>
+    <h1>Ingreso correcto</h1>
 
-<p>
-    Usuario:
-    <strong th:text="${nombreUsuario}">usuario</strong>
-</p>
+    <p>
+        Usuario:
+        <strong th:text="${nombreUsuario}">usuario</strong>
+    </p>
 
-<p>
-    Rol activo:
-    <strong th:text="${rolActivo}">ROL</strong>
-</p>
+    <p>
+        Rol activo:
+        <strong th:text="${rolActivo}">ROL</strong>
+    </p>
+    <form th:action="@{/estudiantes/tabla}" method="get">
+        <button type="submit">Tabla de Estudiantes</button>
+    </form>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Cerrar sesión</button>
+    </form>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Cerrar sesión</button>
-</form>
-
-</body>
+    </body>
 </html>
