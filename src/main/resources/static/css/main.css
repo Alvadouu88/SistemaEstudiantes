@@ -1,0 +1,371 @@
+/* ========================================================
+   VARIABLES DE COLOR Y ESTILO
+   ======================================================== */
+:root {
+    --azul-principal: #1E3A8A;
+    --azul-claro: #2563EB;
+    --azul-hover: #172554;
+    --verde: #16A34A;
+    --amarillo: #F59E0B;
+    --rojo: #DC2626;
+    --fondo: #F8FAFC;
+    --blanco: #FFFFFF;
+    --texto: #0F172A;
+    --texto-suave: #64748B;
+    --borde: #E2E8F0;
+
+    --fuente-principal: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sombra-suave: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+    --sombra-hover: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+/* ========================================================
+   ESTILOS BASE
+   ======================================================== */
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: var(--fuente-principal);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================================
+   HEADER / BARRA SUPERIOR
+   ======================================================== */
+.barra-superior {
+    background-color: var(--azul-principal);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.marca-sistema img {
+    height: 35px;
+    object-fit: contain;
+}
+
+.enlace-inicio {
+    color: var(--blanco);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, text-decoration 0.2s ease;
+}
+
+.enlace-inicio:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* ========================================================
+   LAYOUT PRINCIPAL
+   ======================================================== */
+.contenedor-principal {
+    max-width: 1280px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.encabezado-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.encabezado-pagina h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--azul-hover);
+    margin: 0 0 0.25rem 0;
+}
+
+.encabezado-pagina p {
+    color: var(--texto-suave);
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* ========================================================
+   BOTONES
+   ======================================================== */
+.btn {
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+/* Botón Principal (Acción positiva) */
+.btn-agregar {
+    background-color: var(--azul-claro);
+    color: var(--blanco);
+    border: 1px solid var(--azul-claro);
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+.btn-agregar:hover {
+    background-color: var(--azul-principal);
+    border-color: var(--azul-principal);
+    color: var(--blanco);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.25);
+}
+
+/* Botón Secundario (Cancelar) */
+.btn-cancelar {
+    background-color: var(--blanco);
+    color: var(--texto);
+    border: 1px solid var(--borde);
+}
+
+.btn-cancelar:hover {
+    background-color: var(--fondo);
+    border-color: #CBD5E1;
+    color: var(--texto);
+}
+
+/* Botones de Tabla */
+.btn-editar {
+    background-color: transparent;
+    color: var(--azul-claro);
+    border: 1px solid transparent;
+}
+
+.btn-editar:hover {
+    background-color: #EFF6FF;
+    border-color: #BFDBFE;
+    color: var(--azul-claro);
+}
+
+.btn-desactivar {
+    background-color: transparent;
+    color: var(--rojo);
+    border: 1px solid transparent;
+}
+
+.btn-desactivar:hover {
+    background-color: #FEF2F2;
+    border-color: #FECACA;
+    color: var(--rojo);
+}
+
+/* ========================================================
+   TARJETAS Y TABLAS
+   ======================================================== */
+.tarjeta-tabla {
+    background-color: var(--blanco);
+    border-radius: 8px;
+    border: 1px solid var(--borde);
+    box-shadow: var(--sombra-suave);
+    overflow: hidden;
+}
+
+.tarjeta-tabla__cabecera {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--borde);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: var(--blanco);
+}
+
+.tarjeta-tabla__cabecera h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    color: var(--texto);
+}
+
+.tarjeta-tabla__cabecera p {
+    margin: 0;
+    color: var(--texto-suave);
+    font-size: 0.85rem;
+}
+
+.leyenda-estado {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    font-style: italic;
+    background: var(--fondo);
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    border: 1px dashed var(--borde);
+}
+
+/* Estilos de la Tabla */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: var(--fondo);
+    color: var(--texto-suave);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--borde);
+}
+
+.table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: middle;
+    color: var(--texto);
+    transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover td {
+    background-color: var(--fondo);
+}
+
+/* Códigos visuales (Monospace) */
+.codigo-curso, .codigo-docente, .codigo-estudiante {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--azul-hover);
+    background-color: #F1F5F9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--borde);
+}
+
+/* Etiquetas (Pills) */
+.etiqueta-estado, .etiqueta-tipo {
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.etiqueta-estado--activo {
+    background-color: #DCFCE7;
+    color: var(--verde);
+    border: 1px solid #86EFAC;
+}
+
+.etiqueta-estado--inactivo {
+    background-color: #F1F5F9;
+    color: var(--texto-suave);
+    border: 1px solid #CBD5E1;
+}
+
+.etiqueta-tipo {
+    background-color: #FEF3C7;
+    color: var(--amarillo);
+    border: 1px solid #FDE68A;
+}
+
+/* Estado Vacio */
+.estado-vacio {
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+.estado-vacio strong {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--texto);
+    margin-bottom: 0.5rem;
+}
+
+/* ========================================================
+   MODALES Y FORMULARIOS
+   ======================================================== */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--borde);
+    padding: 1.5rem;
+    background-color: var(--blanco);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.modal-subtitulo {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--azul-claro);
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+
+.modal-title {
+    color: var(--azul-hover);
+    font-weight: 700;
+    margin: 0;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--borde);
+    padding: 1.25rem 1.5rem;
+    background-color: var(--fondo);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* Inputs de Formulario */
+.form-control, .form-select {
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--texto);
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+/* Interruptor de Estado (Switch en el Modal) */
+.interruptor-estado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background-color: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+.interruptor-estado p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    margin-top: 0.25rem;
+}
+
+/* Checkbox Switch de Bootstrap modificado */
+.form-switch .form-check-input:checked {
+    background-color: var(--verde);
+    border-color: var(--verde);
+}

@@ -1,34 +1,32 @@
 package com.marcos.sistemaestudiantes.model;
-import lombok.Getter;
-import lombok.Setter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Setter
-@Getter
 @Entity
 @Table(name = "curso")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_curso")
-    private Long idCurso;
+    private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
+    @Column(name = "codigo", nullable = false, length = 30, unique = true)
     private String codigo;
 
-    @Column(nullable = false, length = 150)
+    @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
-    @Column(nullable = false, length = 20)
+    @Column(name = "tipo", nullable = false, length = 20)
+    @Builder.Default
     private String tipo = "OBLIGATORIO";
 
-    @Column(nullable = false)
-    private boolean activo = true;
+    @Column(name = "activo", nullable = false)
+    @Builder.Default
+    private Boolean activo = true;
 }
-
