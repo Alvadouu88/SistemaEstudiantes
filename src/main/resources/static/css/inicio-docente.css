@@ -1,0 +1,178 @@
+:root {
+    --azul-principal: #1E3A8A;
+    --azul-claro: #2563EB;
+    --azul-hover: #172554;
+    --verde: #16A34A;
+    --amarillo: #F59E0B;
+    --rojo: #DC2626;
+    --fondo: #F8FAFC;
+    --blanco: #FFFFFF;
+    --texto: #0F172A;
+    --texto-suave: #64748B;
+    --borde: #E2E8F0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================================
+   Sidebar (Fondo blanco idéntico a seccion.css)
+   ========================================= */
+.sidebar {
+    width: 260px;
+    background-color: var(--blanco);
+    border-right: 1px solid var(--borde);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--borde);
+    background-color: var(--fondo);
+}
+
+.sidebar-header h2 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--azul-principal);
+}
+
+.sidebar-header p {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav a {
+    text-decoration: none;
+    color: var(--texto);
+    padding: 12px 20px;
+    display: block;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-nav a:hover {
+    background-color: var(--fondo);
+    color: var(--azul-claro);
+}
+
+.sidebar-nav a.activo {
+    border-left-color: var(--azul-claro);
+    color: var(--azul-claro);
+    background-color: #EFF6FF;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid var(--borde);
+}
+
+/* Botón de cierre de sesión adaptado al fondo blanco */
+.btn-logout {
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    color: var(--rojo);
+    border: 1px solid var(--rojo);
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: var(--rojo);
+    color: var(--blanco);
+}
+
+/* =========================================
+   Contenido Principal y Tarjetas (Sin cambios)
+   ========================================= */
+.main-content {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.header-content {
+    margin-bottom: 30px;
+}
+
+.header-content h1 {
+    color: var(--azul-principal);
+}
+
+.secciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.seccion-card {
+    background-color: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--texto);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.seccion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    border-color: var(--azul-claro);
+}
+
+.seccion-img {
+    width: 100%;
+    height: 140px;
+    background-color: var(--azul-claro);
+    object-fit: cover;
+}
+
+.seccion-info {
+    padding: 20px;
+}
+
+.seccion-codigo {
+    font-size: 0.85rem;
+    color: var(--azul-claro);
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.seccion-nombre {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.seccion-detalles {
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+}

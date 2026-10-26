@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface SeccionRepository extends JpaRepository<Seccion, Long> {
-    List<Seccion> findByPeriodoId(Long periodoId);
-    List<Seccion> findByDocenteIdAndPeriodoId(Long docenteId, Long periodoId);
-    List<Seccion> findByPlanCursoIdAndPeriodoId(Long planCursoId, Long periodoId);
+
+    // Método necesario para el LoginController
+    List<Seccion> findByDocenteId(Long docenteId);
 }

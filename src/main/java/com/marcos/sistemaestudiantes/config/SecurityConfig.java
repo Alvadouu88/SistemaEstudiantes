@@ -4,6 +4,7 @@ import com.marcos.sistemaestudiantes.service.UsuarioSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,30 +25,30 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(
-            PasswordEncoder passwordEncoder
-    ) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(
-                usuarioSecurityService
-        );
-
+    public DaoAuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(usuarioSecurityService);
         provider.setPasswordEncoder(passwordEncoder);
-
         return provider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            DaoAuthenticationProvider authenticationProvider
-    ) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, DaoAuthenticationProvider authenticationProvider) throws Exception {
         http
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/cursos/**").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/estudiantes/**").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/Docentes/**").hasRole("ADMINISTRADOR")
+                        // 1. Permisos de Administrador (Gestión total)
+                        .requestMatchers("/cursos/**", "/estudiantes/**", "/docentes/**").hasRole("ADMINISTRADOR")
+
+                        // 2. Permisos Mixtos (Si quieres que el docente solo VEA el listado general de estudiantes/cursos)
+                        //.requestMatchers(HttpMethod.GET, "/estudiantes/**", "/cursos/**").hasAnyRole("ADMINISTRADOR", "DOCENTE")
+
+                        // 3. Permisos de Docente (Asistencia, Calificaciones y sus Secciones)
+                        .requestMatchers("/mis-secciones/**", "/calificaciones/**", "/asistencia/**").hasRole("DOCENTE")
+
+                        // 4. Rutas públicas
                         .requestMatchers("/login", "/css/**", "/img/**").permitAll()
+
+                        // Cualquier otra petición requiere estar logueado
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

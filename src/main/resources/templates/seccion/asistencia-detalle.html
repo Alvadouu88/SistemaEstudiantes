@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasar Asistencia | Gestor Estudiantes</title>
+    <link rel="stylesheet" th:href="@{/css/seccion.css}">
+</head>
+<body>
+
+<aside class="sidebar">
+    <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}" class="btn-volver">
+        <span>&#8592;</span> Volver al Historial
+    </a>
+    <div class="curso-info-sidebar">
+        <div class="curso-codigo" th:text="${seccion.codigo}">CÓDIGO</div>
+        <div class="curso-nombre" th:text="${seccion.planCurso?.curso?.nombre}">Nombre</div>
+    </div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/mis-secciones/{id}(id=${seccion.id})}">Resumen General</a>
+        <a th:href="@{/mis-secciones/{id}/alumnos(id=${seccion.id})}">Alumnos Matriculados</a>
+        <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}" class="activo">Control de Asistencia</a>
+        <a th:href="@{/mis-secciones/{id}/calificaciones(id=${seccion.id})}">Calificaciones</a>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="header-content">
+        <div>
+            <h1>Lista de Asistencia</h1>
+            <p style="color: var(--texto-suave); margin-top: 5px;">
+                Fecha: <span th:text="${#temporals.format(sesion.fecha, 'dd/MM/yyyy')}"></span> |
+                Tema: <span th:text="${sesion.tema ?: 'No especificado'}"></span>
+            </p>
+        </div>
+
+        <div>
+                <span th:if="${sesion.estado == 'ABIERTA'}" class="alert alert-warning" style="margin: 0; padding: 10px;">
+                    Modo Edición Abierto
+                </span>
+            <span th:if="${sesion.estado == 'CERRADA'}" class="alert alert-success" style="margin: 0; padding: 10px;">
+                    Sesión Cerrada (Solo lectura)
+                </span>
+        </div>
+    </div>
+
+    <form th:action="@{/mis-secciones/{id}/asistencia/sesion/{idSesion}/guardar(id=${seccion.id}, idSesion=${sesion.id})}" method="post">
+        <div class="table-container">
+            <table class="data-table">
+                <colgroup>
+                    <col style="width: 5%;">
+                    <col style="width: 50%;">
+                    <col style="width: 30%;">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Apellidos y Nombres</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="asistencia, stat : ${listaAsistencia}">
+                    <td th:text="${stat.count}">1</td>
+
+                    <td>
+                        <strong th:text="${asistencia.detalleMatricula?.matricula?.estudiantePlan?.estudiante?.apellidos}">Apellidos</strong>,
+                        <span th:text="${asistencia.detalleMatricula?.matricula?.estudiantePlan?.estudiante?.nombres}">Nombres</span>
+                    </td>
+
+                    <td>
+                        <!-- Si está ABIERTA -->
+                        <select th:if="${sesion.estado == 'ABIERTA'}"
+                                th:name="'asistio_' + ${asistencia.id}"
+                                class="select-estado"
+                                th:classappend="${asistencia.asistio ? 'estado-presente' : 'estado-falta'}">
+                            <option value="true" th:selected="${asistencia.asistio}">Presente</option>
+                            <option value="false" th:selected="${!asistencia.asistio}">Falta</option>
+                        </select>
+
+                        <!-- Si está CERRADA -->
+                        <span th:if="${sesion.estado == 'CERRADA'}"
+                              th:text="${asistencia.asistio ? 'PRESENTE' : 'FALTA'}"
+                              style="font-weight: bold; padding: 5px 10px; border-radius: 4px;"
+                              th:styleappend="${asistencia.asistio ? 'background-color:#DCFCE7; color:#16A34A;' : 'background-color:#FEE2E2; color:#DC2626;'}">
+                                </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${sesion.estado == 'ABIERTA'}" style="margin-top: 25px; text-align: right;">
+            <button type="submit" class="btn btn-primary">
+                Guardar Cambios y Cerrar Sesión
+            </button>
+        </div>
+    </form>
+</main>
+
+<!-- Script actualizado para leer valores booleanos (true/false) -->
+<script th:if="${sesion.estado == 'ABIERTA'}">
+    document.querySelectorAll('.select-estado').forEach(select => {
+        select.addEventListener('change', function() {
+            if (this.value === 'true') {
+                this.className = 'select-estado estado-presente';
+            } else {
+                this.className = 'select-estado estado-falta';
+            }
+        });
+    });
+</script>
+</body>
+</html>

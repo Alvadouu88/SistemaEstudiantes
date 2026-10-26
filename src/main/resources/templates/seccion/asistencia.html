@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Asistencia | Gestor Estudiantes</title>
+    <link rel="stylesheet" th:href="@{/css/seccion.css}">
+</head>
+<body>
+
+<aside class="sidebar">
+    <a href="/inicio" class="btn-volver">
+        <span>&#8592;</span> Volver al Panel
+    </a>
+
+    <div class="curso-info-sidebar">
+        <div class="curso-codigo" th:text="${seccion.codigo}">CÓDIGO</div>
+        <div class="curso-nombre" th:text="${seccion.planCurso?.curso?.nombre}">Nombre</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a th:href="@{/mis-secciones/{id}(id=${seccion.id})}">Resumen General</a>
+        <a th:href="@{/mis-secciones/{id}/alumnos(id=${seccion.id})}">Alumnos Matriculados</a>
+        <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}" class="activo">Control de Asistencia</a>
+        <a th:href="@{/mis-secciones/{id}/calificaciones(id=${seccion.id})}">Calificaciones</a>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="header-content">
+        <div>
+            <h1>Control de Asistencia</h1>
+            <p style="color: var(--texto-suave); margin-top: 5px;" th:text="'Fecha de hoy: ' + ${#temporals.format(fechaHoy, 'dd/MM/yyyy')}"></p>
+        </div>
+    </div>
+
+    <!-- Panel de Clase en Curso -->
+    <div class="card-info" style="border-left: 4px solid var(--azul-principal);">
+        <h3 style="margin-bottom: 15px;">Clase de Hoy</h3>
+
+        <div th:if="${horarioActivo != null}">
+            <p style="color: var(--verde); font-weight: bold; margin-bottom: 15px;">
+                🟢 Dentro del horario de clase permitido.
+            </p>
+            <form th:action="@{/mis-secciones/{id}/asistencia/abrir(id=${seccion.id})}" method="post">
+                <input type="hidden" name="idHorario" th:value="${horarioActivo.id}">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 5px;">Tema de la sesión (Opcional):</label>
+                    <input type="text" name="tema" class="form-control" style="width: 100%; padding: 10px; border: 1px solid var(--borde); border-radius: 5px;" placeholder="Ej. Introducción a Spring Boot">
+                </div>
+                <button type="submit" style="background-color: var(--azul-principal); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                    Abrir Asistencia Ahora
+                </button>
+            </form>
+        </div>
+
+        <div th:unless="${horarioActivo != null}">
+            <p style="color: var(--rojo); font-weight: bold;">
+                🔴 Fuera de horario de clases. No es posible registrar asistencia en este momento.
+            </p>
+            <p style="color: var(--texto-suave); font-size: 0.9rem; margin-top: 5px;">
+                El sistema solo habilita el registro durante las horas programadas para esta sección.
+            </p>
+        </div>
+    </div>
+
+    <!-- Historial de Sesiones -->
+    <h3 style="margin: 30px 0 15px 0;">Historial de Sesiones</h3>
+    <div class="table-container">
+        <table class="data-table">
+            <colgroup>
+                <col style="width: 15%;">
+                <col style="width: 40%;">
+                <col style="width: 15%;">
+                <col style="width: 30%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tema</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sesion : ${historial}">
+                <td th:text="${#temporals.format(sesion.fecha, 'dd/MM/yyyy')}">10/10/2026</td>
+                <td th:text="${sesion.tema ?: 'Sin tema registrado'}">Tema</td>
+                <td>
+                    <span th:if="${sesion.estado == 'ABIERTA'}" style="color: var(--amarillo); font-weight: bold;">ABIERTA</span>
+                    <span th:if="${sesion.estado == 'CERRADA'}" style="color: var(--verde); font-weight: bold;">CERRADA</span>
+                </td>
+                <td>
+                    <a th:href="@{/mis-secciones/{id}/asistencia/sesion/{idSesion}(id=${seccion.id}, idSesion=${sesion.id})}"
+                       style="color: var(--azul-claro); text-decoration: none; font-weight: 500;">
+                        Ver Detalle / Marcar
+                    </a>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(historial)}">
+                <td colspan="4" style="text-align: center; color: var(--texto-suave); padding: 30px;">
+                    Aún no se han registrado sesiones para esta sección.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

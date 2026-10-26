@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AsistenciaRepository extends JpaRepository<Asistencia, Long> {
-    List<Asistencia> findBySesionId(Long sesionId);
-    List<Asistencia> findByDetalleMatriculaId(Long detalleId);
+    List<Asistencia> findBySesion_IdOrderByDetalleMatricula_Matricula_EstudiantePlan_Estudiante_ApellidosAsc(Long idSesion);
 }

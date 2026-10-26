@@ -2,6 +2,7 @@ package com.marcos.sistemaestudiantes.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(
@@ -41,4 +42,16 @@ public class Seccion {
     @Column(name = "estado", nullable = false, length = 20)
     @Builder.Default
     private String estado = "BORRADOR";
+
+    @Formula("(SELECT COUNT(*) FROM detalle_matricula dm WHERE dm.id_seccion = id_seccion AND dm.estado = 'INSCRITO')")
+    private Integer matriculados;
+
+    // Recuerda generar los getters y setters para este nuevo campo
+    public Integer getMatriculados() {
+        return matriculados;
+    }
+
+    public void setMatriculados(Integer matriculados) {
+        this.matriculados = matriculados;
+    }
 }
