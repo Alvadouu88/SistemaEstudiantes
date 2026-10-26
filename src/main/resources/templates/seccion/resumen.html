@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Sección | Gestor Estudiantes</title>
+    <link rel="stylesheet" th:href="@{/css/seccion.css}">
+</head>
+<body>
+
+<aside class="sidebar">
+    <a href="/inicio" class="btn-volver">
+        <span>&#8592;</span> Volver al Panel
+    </a>
+
+    <div class="curso-info-sidebar">
+        <div class="curso-codigo" th:text="${seccion.codigo}">ISI101-A</div>
+        <div class="curso-nombre" th:text="${seccion.planCurso?.curso?.nombre}">Nombre del Curso</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a th:href="@{/mis-secciones/{id}(id=${seccion.id})}" class="activo">Resumen General</a>
+        <a th:href="@{/mis-secciones/{id}/alumnos(id=${seccion.id})}">Alumnos Matriculados</a>
+        <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}">Control de Asistencia</a>
+        <a th:href="@{/mis-secciones/{id}/calificaciones(id=${seccion.id})}">Calificaciones</a>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="header-content">
+        <div>
+            <h1>Resumen de la Sección</h1>
+            <p style="color: var(--texto-suave); margin-top: 5px;">Información general y horarios asignados</p>
+        </div>
+        <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}"
+           style="background-color: var(--azul-principal); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+            Ir a Asistencia hoy
+        </a>
+    </div>
+
+    <div class="card-info">
+        <h3 style="color: var(--texto); border-bottom: 1px solid var(--borde); padding-bottom: 10px;">Detalles Académicos</h3>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Periodo</label>
+                <span th:text="${seccion.periodo?.codigo}">2026-2</span>
+            </div>
+            <div class="info-item">
+                <label>Estado</label>
+                <span th:text="${seccion.estado}">ABIERTA</span>
+            </div>
+            <div class="info-item">
+                <label>Alumnos / Cupo</label>
+                <span>
+                        <span th:text="${seccion.matriculados ?: 0}">0</span> / <span th:text="${seccion.cupo}">30</span>
+                    </span>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

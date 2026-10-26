@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Calificaciones | Gestor Estudiantes</title>
+    <link rel="stylesheet" th:href="@{/css/seccion.css}">
+
+</head>
+<body>
+
+<aside class="sidebar">
+    <a href="/inicio" class="btn-volver">
+        <span>&#8592;</span> Volver al Panel
+    </a>
+    <div class="curso-info-sidebar">
+        <div class="curso-codigo" th:text="${seccion.codigo}">CÓDIGO</div>
+        <div class="curso-nombre" th:text="${seccion.planCurso?.curso?.nombre}">Nombre</div>
+    </div>
+    <nav class="sidebar-nav">
+        <a th:href="@{/mis-secciones/{id}(id=${seccion.id})}">Resumen General</a>
+        <a th:href="@{/mis-secciones/{id}/alumnos(id=${seccion.id})}">Alumnos Matriculados</a>
+        <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}">Control de Asistencia</a>
+        <a th:href="@{/mis-secciones/{id}/calificaciones(id=${seccion.id})}" class="activo">Calificaciones</a>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="header-content">
+        <div>
+            <h1>Registro de Calificaciones</h1>
+            <p style="color: var(--texto-suave); margin-top: 5px;">Ingresa las notas de 0 a 20. Los cambios se guardan al presionar el botón.</p>
+        </div>
+
+        <span th:if="${param.exito}" class="alert alert-success" style="margin: 0; padding: 10px;">
+                ¡Notas guardadas correctamente!
+            </span>
+    </div>
+
+    <form th:action="@{/mis-secciones/{id}/calificaciones/guardar(id=${seccion.id})}" method="post">
+        <div class="table-container" style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                <colgroup>
+                    <col style="width: 5%;">
+                    <col style="width: 35%;">
+                </colgroup>
+                <tr>
+                    <th>N°</th>
+                    <th>Apellidos y Nombres</th>
+
+                    <!-- Usando eval.pesoPorcentaje -->
+                    <th th:each="eval : ${evaluaciones}"
+                        style="text-align: center;">
+                        <div th:text="${eval.codigo}" style="font-weight: bold; color: var(--azul-principal);">PC1</div>
+                        <div th:text="${eval.pesoPorcentaje} + '%'" style="font-size: 0.8rem; color: var(--texto-suave);">20%</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="alumno, stat : ${alumnos}">
+                    <td th:text="${stat.count}">1</td>
+
+                    <td>
+                        <strong th:text="${alumno.matricula?.estudiantePlan?.estudiante?.apellidos}">Apellidos</strong>,
+                        <span th:text="${alumno.matricula?.estudiantePlan?.estudiante?.nombres}">Nombres</span>
+                    </td>
+
+                    <td th:each="eval : ${evaluaciones}" style="text-align: center;">
+                        <input type="number" step="0.01" min="0" max="20"
+                               class="form-control nota-input"
+                               th:name="'nota_' + ${alumno.id} + '_' + ${eval.id}"
+                               th:value="${notasMap.get(alumno.id) != null ? notasMap.get(alumno.id).get(eval.id) : ''}"
+                               placeholder="-" />
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(alumnos)}">
+                    <td th:colspan="${2 + #lists.size(evaluaciones)}" style="text-align: center; color: var(--texto-suave); padding: 30px;">
+                        No hay alumnos matriculados en esta sección.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(alumnos) and not #lists.isEmpty(evaluaciones)}" style="margin-top: 25px; text-align: right;">
+            <button type="submit" class="btn btn-primary">
+                Guardar Calificaciones
+            </button>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

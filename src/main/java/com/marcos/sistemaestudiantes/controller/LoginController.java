@@ -1,6 +1,12 @@
 package com.marcos.sistemaestudiantes.controller;
 
+
+import com.marcos.sistemaestudiantes.model.Seccion;
+import com.marcos.sistemaestudiantes.model.Usuario;
+import com.marcos.sistemaestudiantes.repository.SeccionRepository;
+import com.marcos.sistemaestudiantes.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -13,7 +19,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
+
+    private final UsuarioRepository usuarioRepository;
+    private final SeccionRepository seccionRepository;
 
     @GetMapping("/login")
     public String mostrarLogin() {
@@ -60,6 +70,7 @@ public class LoginController {
         return "redirect:/inicio";
     }
 
+
     @GetMapping("/inicio")
     public String mostrarInicio(
             Authentication authentication,
@@ -74,6 +85,20 @@ public class LoginController {
 
         model.addAttribute("nombreUsuario", authentication.getName());
         model.addAttribute("rolActivo", rolActivo);
+
+        if ("DOCENTE".equals(rolActivo)) {
+            Usuario usuario = usuarioRepository.findByNombreUsuario(authentication.getName())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            if (usuario.getDocente() != null) {
+                List<Seccion> misSecciones = seccionRepository.findByDocenteId(usuario.getDocente().getId());
+                model.addAttribute("secciones", misSecciones);
+            } else {
+                model.addAttribute("secciones", List.of());
+            }
+
+            return "inicio-docente";
+        }
 
         return "inicio";
     }

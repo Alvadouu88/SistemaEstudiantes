@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumnos Matriculados | Gestor Estudiantes</title>
+    <link rel="stylesheet" th:href="@{/css/seccion.css}">
+</head>
+<body>
+
+<aside class="sidebar">
+    <a href="/inicio" class="btn-volver">
+        <span>&#8592;</span> Volver al Panel
+    </a>
+
+    <div class="curso-info-sidebar">
+        <div class="curso-codigo" th:text="${seccion.codigo}">ISI101-A</div>
+        <div class="curso-nombre" th:text="${seccion.planCurso?.curso?.nombre}">Nombre del Curso</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a th:href="@{/mis-secciones/{id}(id=${seccion.id})}">Resumen General</a>
+        <a th:href="@{/mis-secciones/{id}/alumnos(id=${seccion.id})}" class="activo">Alumnos Matriculados</a>
+        <a th:href="@{/mis-secciones/{id}/asistencia(id=${seccion.id})}">Control de Asistencia</a>
+        <a th:href="@{/mis-secciones/{id}/calificaciones(id=${seccion.id})}">Calificaciones</a>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="header-content">
+        <div>
+            <h1>Alumnos Matriculados</h1>
+            <p style="color: var(--texto-suave); margin-top: 5px;">
+                Total de inscritos: <span th:text="${#lists.size(alumnos)}">0</span>
+            </p>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+            <colgroup>
+                <col style="width: 5%;">
+                <col style="width: 15%;">
+                <col style="width: 40%;">
+                <col style="width: 25%;">
+                <col style="width: 15%;">
+            </colgroup>
+            <tr>
+                <th>N°</th>
+                <th>Código</th>
+                <th>Apellidos y Nombres</th>
+                <th>Correo</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Usamos el objeto "stat" de Thymeleaf para sacar el contador de la fila (stat.count) -->
+            <tr th:each="detalle, stat : ${alumnos}">
+                <td th:text="${stat.count}">1</td>
+
+                <!-- Navegación por las relaciones JPA: DetalleMatricula -> Matricula -> EstudiantePlan -> Estudiante -->
+                <td th:text="${detalle.matricula?.estudiantePlan?.estudiante?.codigo}">E001</td>
+
+                <td>
+                    <strong th:text="${detalle.matricula?.estudiantePlan?.estudiante?.apellidos}">Apellidos</strong>,
+                    <span th:text="${detalle.matricula?.estudiantePlan?.estudiante?.nombres}">Nombres</span>
+                </td>
+
+                <td th:text="${detalle.matricula?.estudiantePlan?.estudiante?.correo}">correo@uni.edu</td>
+
+                <td>
+                    <span class="badge-estado" th:text="${detalle.estado}">INSCRITO</span>
+                </td>
+            </tr>
+
+            <!-- Mensaje por si la sección aún no tiene alumnos -->
+            <tr th:if="${#lists.isEmpty(alumnos)}">
+                <td colspan="5" style="text-align: center; color: var(--texto-suave); padding: 30px;">
+                    No hay alumnos matriculados en esta sección.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>

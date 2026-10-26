@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Docente</title>
+    <!-- Vinculación del archivo CSS externo -->
+    <link rel="stylesheet" th:href="@{/css/inicio-docente.css}">
+</head>
+<body>
+
+<!-- Menú Lateral -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2 th:text="${nombreUsuario}">Profesor</h2>
+        <p>Panel Docente</p>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="/mis-secciones" class="activo">Mis Secciones</a>
+        <a href="#">Horarios</a>
+        <a href="#">Historial de Notas</a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
+    </div>
+</aside>
+
+<!-- Contenido Principal -->
+<main class="main-content">
+    <div class="header-content">
+        <h1>Mis Secciones Asignadas</h1>
+        <p style="color: var(--texto-suave); margin-top: 5px;">Periodo Académico Actual</p>
+    </div>
+
+    <div class="secciones-grid">
+        <!-- Iteración dinámica: Crea una tarjeta por cada sección en la lista -->
+        <a th:each="seccion : ${secciones}"
+           th:href="@{/mis-secciones/{id}(id=${seccion.id})}"
+           class="seccion-card">
+
+            <img th:src="@{/images/curso.png}" alt="Curso" class="seccion-img">
+
+            <div class="seccion-info">
+                <!-- Código de la sección (ej. ISI101-A) -->
+                <div class="seccion-codigo" th:text="${seccion.codigo}">CÓDIGO</div>
+
+                <!-- Nombre del curso navegando por las relaciones JPA: Seccion -> PlanCurso -> Curso -->
+                <div class="seccion-nombre" th:text="${seccion.planCurso.curso.nombre}">Nombre del Curso</div>
+
+                <div class="seccion-detalles">
+                    Alumnos matriculados:
+                    <span th:text="${seccion.matriculados ?: 0}">0</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Mensaje alternativo si la lista está vacía -->
+        <div th:if="${#lists.isEmpty(secciones)}" style="grid-column: 1 / -1; padding: 20px; text-align: center; color: var(--texto-suave);">
+            No tienes secciones asignadas en este periodo académico.
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

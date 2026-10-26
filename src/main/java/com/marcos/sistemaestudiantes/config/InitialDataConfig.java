@@ -2,8 +2,10 @@ package com.marcos.sistemaestudiantes.config;
 
 import com.marcos.sistemaestudiantes.model.Rol;
 import com.marcos.sistemaestudiantes.model.Usuario;
+// import com.marcos.sistemaestudiantes.model.Docente; // Descomentar cuando tengas la entidad
 import com.marcos.sistemaestudiantes.repository.RolRepository;
 import com.marcos.sistemaestudiantes.repository.UsuarioRepository;
+// import com.marcos.sistemaestudiantes.repository.DocenteRepository; // Descomentar cuando lo necesites
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +21,7 @@ public class InitialDataConfig {
 
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
+    // private final DocenteRepository docenteRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${app.bootstrap.admin.username}")
@@ -27,27 +30,30 @@ public class InitialDataConfig {
     @Value("${app.bootstrap.admin.password}")
     private String passwordAdmin;
 
+
     @Bean
-    public CommandLineRunner crearUsuarioAdministrador() {
+    public CommandLineRunner crearUsuariosIniciales() {
+
         return args -> {
-            if (usuarioRepository.findByNombreUsuario(usernameAdmin).isPresent()) {
-                return;
+            // 1. Crear Administrador
+            if (usuarioRepository.findByNombreUsuario(usernameAdmin).isEmpty()) {
+                Rol rolAdministrador = rolRepository.findByCodigo("ADMINISTRADOR")
+                        .orElseThrow(() -> new IllegalStateException("No existe el rol ADMINISTRADOR"));
+
+                Usuario admin = new Usuario();
+                admin.setNombreUsuario(usernameAdmin);
+                admin.setNombreMostrar("Administrador del sistema");
+                admin.setPasswordHash(passwordEncoder.encode(passwordAdmin));
+                admin.setActivo(true);
+                admin.setCreadoEn(OffsetDateTime.now());
+                admin.getRoles().add(rolAdministrador);
+
+                usuarioRepository.save(admin);
             }
 
-            Rol rolAdministrador = rolRepository.findByCodigo("ADMINISTRADOR")
-                    .orElseThrow(() -> new IllegalStateException(
-                            "No existe el rol ADMINISTRADOR en la base de datos."
-                    ));
+            // 2. Crear Docente
 
-            Usuario usuario = new Usuario();
-            usuario.setNombreUsuario(usernameAdmin);
-            usuario.setNombreMostrar("Administrador del sistema");
-            usuario.setPasswordHash(passwordEncoder.encode(passwordAdmin));
-            usuario.setActivo(true);
-            usuario.setCreadoEn(OffsetDateTime.now());
-            usuario.getRoles().add(rolAdministrador);
 
-            usuarioRepository.save(usuario);
         };
     }
 }

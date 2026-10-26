@@ -1,9 +1,7 @@
 package com.marcos.sistemaestudiantes.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -14,6 +12,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Usuario {
 
     @Id
@@ -21,22 +21,24 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Long id;
 
-    @Column(name = "id_docente")
-    private Long idDocente;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_docente", unique = true)
+    private Docente docente;
 
-    @Column(name = "nombre_usuario", nullable = false)
+    @Column(name = "nombre_usuario", nullable = false, length = 50, unique = true)
     private String nombreUsuario;
 
-    @Column(name = "nombre_mostrar", nullable = false)
+    @Column(name = "nombre_mostrar", nullable = false, length = 150)
     private String nombreMostrar;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @Column(name = "activo", nullable = false)
-    private Boolean activo;
+    @Builder.Default
+    private Boolean activo = true;
 
-    @Column(name = "creado_en", nullable = false)
+    @Column(name = "creado_en", nullable = false, insertable = false, updatable = false)
     private OffsetDateTime creadoEn;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -45,5 +47,6 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_rol")
     )
+    @Builder.Default
     private Set<Rol> roles = new HashSet<>();
 }
