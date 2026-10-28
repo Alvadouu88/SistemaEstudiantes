@@ -17,7 +17,7 @@
         Rol activo:
         <strong th:text="${rolActivo}">ROL</strong>
     </p>
-    <form th:action="@{/estudiantes/tabla}" method="get">
+    <form th:action="@{/estudiantes}" method="get">
         <button type="submit">Tabla de Estudiantes</button>
     </form>
     <form th:action="@{/logout}" method="post">
@@ -25,8 +25,11 @@
     </form>
 
     </body>
-<form th:action="@{/Docentes/tabla}" method="get">
+<form th:action="@{/docentes}" method="get">
     <button type="submit">Tabla de Docentes</button>
+</form>
+<form th:action="@{/asistencia}">
+    <button type="submit">Asistencia</button>
 </form>
 
 <form th:action="@{/logout}" method="post">

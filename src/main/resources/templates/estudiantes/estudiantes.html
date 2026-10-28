@@ -77,6 +77,10 @@
                               th:text="${item.estado}">ACTIVO</span>
                     </td>
                     <td class="text-end celda-acciones">
+                        <!-- Nuevo botón de Historial Académico -->
+                        <a class="btn btn-sm btn-outline-info" th:href="@{/historial/{id}(id=${item.id})}">
+                            Historial
+                        </a>
                         <button class="btn btn-sm btn-editar btn-outline-primary" type="button"
                                 th:attr="data-id=${item.id},data-codigo=${item.codigo},data-tipo-documento=${item.tipoDocumento},data-numero-documento=${item.numeroDocumento},data-nombres=${item.nombres},data-apellidos=${item.apellidos},data-fecha-nacimiento=${item.fechaNacimiento},data-correo=${item.correo},data-telefono=${item.telefono},data-estado=${item.estado}">
                             Editar
