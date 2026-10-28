@@ -27,7 +27,6 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
 
 
 
-    // Obtener la lista detallada de docentes inactivos
     @Query(value = "SELECT id_docente, codigo, nombres, apellidos, correo, telefono FROM docente WHERE activo = false", nativeQuery = true)
     List<Object[]> listarDocentesInactivosBruto();
 }
