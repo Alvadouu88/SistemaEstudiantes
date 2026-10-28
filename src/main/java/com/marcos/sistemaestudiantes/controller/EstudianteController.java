@@ -1,9 +1,11 @@
 package com.marcos.sistemaestudiantes.controller;
 
+import com.marcos.sistemaestudiantes.dto.EstudiantePromedioDto;
 import com.marcos.sistemaestudiantes.dto.EstudianteRequestDto;
 import com.marcos.sistemaestudiantes.dto.EstudianteResponseDto;
 import com.marcos.sistemaestudiantes.service.EstudianteService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +13,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/estudiantes")
 public class EstudianteController {
 
+    @Autowired
     private final EstudianteService estudianteService;
 
     public EstudianteController(EstudianteService estudianteService) {
@@ -98,5 +103,12 @@ public class EstudianteController {
         model.addAttribute("abrirModal", abrirModal);
 
         return "estudiantes/estudiantes"; // O "estudiantes/estudiantes" dependiendo de tu estructura de carpetas
+    }
+
+    @GetMapping("/promedios")
+    public String verTablaPromedios(Model model) {
+        List<EstudiantePromedioDto> promedios = estudianteService.listarPromediosEstudiantes();
+        model.addAttribute("promedios", promedios);
+        return "dashboards/reporteEstudiantes";
     }
 }

@@ -1,6 +1,7 @@
 package com.marcos.sistemaestudiantes.controller;
 
 
+import com.marcos.sistemaestudiantes.dto.DocenteEstadoDto;
 import com.marcos.sistemaestudiantes.dto.DocenteRequestDto;
 import com.marcos.sistemaestudiantes.dto.DocenteResponseDto;
 import com.marcos.sistemaestudiantes.service.DocenteService;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/docentes")
@@ -99,5 +102,17 @@ public class DocenteController {
         model.addAttribute("abrirModal", abrirModal);
 
         return "docentes/docentes"; // O "docentes/docentes" según tu estructura de carpetas
+    }
+
+    @GetMapping("/resumen-estado")
+    public String verResumenDocentes(Model model) {
+        model.addAttribute("totalDocentes", docenteService.obtenerTotalDocentes());
+        model.addAttribute("totalActivos", docenteService.obtenerDocentesActivos());
+        model.addAttribute("totalInactivos", docenteService.obtenerDocentesInactivos());
+
+        List<DocenteEstadoDto> listaInactivos = docenteService.listarDocentesInactivos();
+        model.addAttribute("docentesInactivos", listaInactivos);
+
+        return "dashboards/reporteDocentesEstado";
     }
 }

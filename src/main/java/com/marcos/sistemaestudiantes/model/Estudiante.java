@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(
@@ -49,4 +50,7 @@ public class Estudiante {
     @Column(name = "estado", nullable = false, length = 20)
     @Builder.Default
     private String estado = "ACTIVO";
+
+    @OneToMany(mappedBy = "estudiante", fetch = FetchType.LAZY)
+    private List<EstudiantePlan> estudiantesPlanes;
 }
