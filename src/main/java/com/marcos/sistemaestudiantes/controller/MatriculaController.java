@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 @Controller
 @RequestMapping("/matriculas")
-public class matriculaControlles {
+public class MatriculaController {
     @Autowired
     private MatriculaRepository matriculaRepository;
 

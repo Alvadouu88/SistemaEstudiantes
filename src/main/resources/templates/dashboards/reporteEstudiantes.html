@@ -47,7 +47,7 @@
                                 <td>
                                     <!-- Badge de Bootstrap para resaltar la nota baja -->
                                     <span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 fs-6"
-                                          th:text="${est.promedioCalculado}">
+                                          th:text="${#numbers.formatDecimal(est.promedioCalculado, 1, 2)}">
                                             </span>
                                 </td>
                                 <td>

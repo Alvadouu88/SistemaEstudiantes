@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
                         // 1. Permisos de Administrador (Gestión total)
-                        .requestMatchers("/cursos/**", "/estudiantes/**", "/docentes/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/cursos/**", "/estudiantes/**", "/docentes/**", "/dashboard/**").hasRole("ADMINISTRADOR")
 
                         // 2. Permisos Mixtos (Si quieres que el docente solo VEA el listado general de estudiantes/cursos)
                         //.requestMatchers(HttpMethod.GET, "/estudiantes/**", "/cursos/**").hasAnyRole("ADMINISTRADOR", "DOCENTE")
@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/mis-secciones/**", "/calificaciones/**", "/asistencia/**").hasRole("DOCENTE")
 
                         // 4. Rutas públicas
-                        .requestMatchers("/login", "/css/**", "/img/**").permitAll()
+                        .requestMatchers("/login", "/css/**", "/images/**").permitAll()
 
                         // Cualquier otra petición requiere estar logueado
                         .anyRequest().authenticated()
