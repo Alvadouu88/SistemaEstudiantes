@@ -2,6 +2,7 @@ package com.marcos.sistemaestudiantes.service;
 
 
 
+import com.marcos.sistemaestudiantes.dto.EstudiantePromedioDto;
 import com.marcos.sistemaestudiantes.dto.EstudianteRequestDto;
 import com.marcos.sistemaestudiantes.dto.EstudianteResponseDto;
 import com.marcos.sistemaestudiantes.model.Estudiante;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -131,5 +133,9 @@ public class EstudianteService {
                 entity.getTelefono(),
                 entity.getEstado()
         );
+    }
+
+    public List<EstudiantePromedioDto> listarPromediosEstudiantes() {
+        return estudianteRepository.obtenerEstudiantesPromedioBajo();
     }
 }
