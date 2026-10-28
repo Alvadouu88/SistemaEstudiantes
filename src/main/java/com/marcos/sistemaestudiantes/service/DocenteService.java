@@ -1,6 +1,7 @@
 package com.marcos.sistemaestudiantes.service;
 
 
+import com.marcos.sistemaestudiantes.dto.DocenteEstadoDto;
 import com.marcos.sistemaestudiantes.dto.DocenteRequestDto;
 import com.marcos.sistemaestudiantes.dto.DocenteResponseDto;
 import com.marcos.sistemaestudiantes.model.Docente;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -137,5 +139,35 @@ public class DocenteService {
                 entity.getTelefono(),
                 entity.getActivo()
         );
+    }
+
+    public long obtenerTotalDocentes() {
+        return docenteRepository.count();
+    }
+
+    public long obtenerDocentesActivos() {
+        return docenteRepository.countByActivo(true);
+    }
+
+    public long obtenerDocentesInactivos() {
+        return docenteRepository.countByActivo(false);
+    }
+
+    public List<DocenteEstadoDto> listarDocentesInactivos() {
+        List<Object[]> resultados = docenteRepository.listarDocentesInactivosBruto();
+        List<DocenteEstadoDto> inactivos = new ArrayList<>();
+
+        for (Object[] fila : resultados) {
+            Long id = ((Number) fila[0]).longValue();
+            String codigo = (String) fila[1];
+            String nombres = (String) fila[2];
+            String apellidos = (String) fila[3];
+            String correo = (String) fila[4];
+            String telefono = (String) fila[5];
+
+            inactivos.add(new DocenteEstadoDto(id, codigo, nombres, apellidos, correo, telefono));
+        }
+
+        return inactivos;
     }
 }
